@@ -473,6 +473,7 @@ def view_listing(listing_id):
 @main.route('/')
 def index():
     deactivate_expired_listings()
+    cancel_expired_bookings()
     # Query parameters voor paginering
     page = int(request.args.get('page', 1))
     per_page = 6
@@ -1071,6 +1072,13 @@ def deactivate_expired_listings():
         listing.deactivate_if_expired()
 
     # Commit the changes
+    db.session.commit()
+
+def cancel_expired_bookings():
+    bookings = Booking.query.filter(Booking.end_date < datetime.utcnow().date(), Booking.status != 'approved').all()
+    for booking in bookings:
+        booking.cancel_if_expired()
+
     db.session.commit()
 
 

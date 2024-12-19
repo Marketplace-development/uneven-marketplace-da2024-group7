@@ -120,6 +120,11 @@ class Booking(db.Model):
     renter = db.relationship('User', backref='bookings', lazy=True)
     transaction = db.relationship('Transaction', backref='bookings', lazy=True)
 
+    def cancel_if_expired(self):
+        if self.end_date < datetime.utcnow().date() and self.status != "approved":
+            self.status = "cancelled"
+            db.session.commit()
+
     def __repr__(self):
         return f"<Booking {self.booking_id} | Listing {self.listing_id} | Renter {self.renter_id} | Status {self.status}>"
 
