@@ -1108,36 +1108,38 @@ def performance():
             "bookings": row.bookings,
             "rented_days": float(row.rented_days or 0)
         }
-        for row in reversed(monthly_data)  # Reverse the order here
+        for row in reversed(monthly_data)  # Reverse de volgorde
     ]
 
     # Bereken gemiddeldes voor de laatste 2 maanden
     if len(monthly_data) >= 2:
         avg_rented_days = sum(row.rented_days or 0 for row in monthly_data[:2]) / 2
         avg_revenue = sum(row.revenue or 0 for row in monthly_data[:2]) / 2
-    elif len(monthly_data) == 1:  # Als slechts 1 maand beschikbaar is
+    elif len(monthly_data) == 1:
         avg_rented_days = monthly_data[0].rented_days or 0
         avg_revenue = monthly_data[0].revenue or 0
     else:
         avg_rented_days = 0
         avg_revenue = 0
 
-    # Voorspel huidige maand (op basis van de vorige 2 maanden)
-    predicted_rented_days = [avg_rented_days, avg_rented_days] if avg_rented_days > 0 else [0, 0]
+    predicted_rented_days = []  
 
-    # Dynamisch berekenen voor januari en februari
-    for i in range(2):  # Voorspel voor januari en februari
-        if len(monthly_data) > 0 and i == 0:  # Eerste iteratie: januari
-            # Gebruik november en december (december is al voorspeld)
+    # Voorspel huidige maand (op basis van de vorige 2 maanden)
+    if avg_rented_days > 0:
+        predicted_rented_days.append(avg_rented_days)
+    else:
+        predicted_rented_days.append(0)
+
+    # Dynamisch voorspellen voor komende 2 maanden
+    for i in range(2):  # Voorspel voor de volgende twee maanden
+        if i == 0 and len(monthly_data) > 0:  # Eerste iteratie: januari
             next_prediction = (predicted_rented_days[-1] + monthly_data[0].rented_days) / 2
-        elif i > 0:  # Tweede iteratie: gebruik voorspellingen
-            next_prediction = (predicted_rented_days[-1] + predicted_rented_days[-2]) / 2
         else:  # Tweede iteratie: februari
-            # Gebruik de voorspellingen van december en januari
             next_prediction = (predicted_rented_days[-1] + predicted_rented_days[-2]) / 2
-        predicted_rented_days.append(next_prediction)  # Voeg toe aan de lijst
+        predicted_rented_days.append(next_prediction)
 
     print("----")  # Debuggen
+    print(monthly_data)
     print(predicted_rented_days)
     print("----")
 
@@ -1145,7 +1147,7 @@ def performance():
         {
             "month": (datetime.utcnow().replace(day=1) + relativedelta(months=offset)).strftime("%B %Y"),
             "predicted_revenue": round(rented_days * float(selected_listing.price_per_day), 2),
-            "predicted_rented_days": round(rented_days, 2),  # Zorg voor nauwkeurigheid tot 2 decimalen
+            "predicted_rented_days": round(rented_days, 2),
         }
         for offset, rented_days in enumerate(predicted_rented_days)
     ]
