@@ -1,7 +1,0 @@
-- Database vullen met zoekertjes/users/reviews/...
-- !ALGORITME!
-- change the previous pictures in upload/ to the supabase
-Werkt alleen bij foto's uit de supabase, alle foto's moeten nog naar supabase gezet worden - image on booking page isn't loading
-DONE?- reviews on booking page after placing a review it's showing 'you can only review after the end of the booking' should say the review instead
-- CategoryListing mag weg uit models en database, wordt niet gebruikt?
-- routes opkuisen, heel veel wordt niet gebruikt
