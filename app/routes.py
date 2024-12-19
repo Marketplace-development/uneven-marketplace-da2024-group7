@@ -698,7 +698,8 @@ def booking_details(booking_id):
     # Check if a review can be made by the renter
     existing_renter_review = UserReview.query.filter_by(
         reviewer_id=current_user_id,
-        listing_id=listing.id
+        listing_id=listing.id,
+        reviewed_id=listing.provider_id
     ).first() if is_renter else None
 
     can_renter_review = (
@@ -711,7 +712,8 @@ def booking_details(booking_id):
     # Check if a review can be made by the provider
     existing_provider_review = UserReview.query.filter_by(
         reviewer_id=current_user_id,
-        listing_id=listing.id
+        listing_id=listing.id,
+        reviewed_id=booking.renter_id
     ).first() if is_provider else None
 
     can_provider_review = (
