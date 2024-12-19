@@ -1138,6 +1138,8 @@ def performance():
             next_prediction = (predicted_rented_days[-1] + predicted_rented_days[-2]) / 2
         predicted_rented_days.append(next_prediction)
 
+
+
     print("----")  # Debuggen
     print(monthly_data)
     print(predicted_rented_days)
@@ -1152,9 +1154,11 @@ def performance():
         for offset, rented_days in enumerate(predicted_rented_days)
     ]
     # Debug prints voor controle
-    print("Monthly Revenue Data:", monthly_revenue_data)
+    print("----")
+    print("Monthly Data:", [(row.month, row.revenue, row.bookings, row.rented_days) for row in monthly_data])
+    print("Predicted Rented Days:", predicted_rented_days)
     print("Revenue Predictions:", revenue_predictions)
-
+    print("----")
     # Bereken de prestaties van de geselecteerde listing
     approved_bookings = aliased(
         db.session.query(
