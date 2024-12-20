@@ -90,10 +90,10 @@
                 {% else %}
                     {% if is_renter %}
                         <h3>Your Review</h3>
-                        {% if existing_review %}
-                            <p><strong>Rating:</strong> {{ existing_review.rating }} / 5</p>
-                            <p><strong>Comment:</strong> {{ existing_review.comment }}</p>
-                            <p class="text-muted"><i>Review left on {{ existing_review.created_at }}</i></p>
+                        {% if existing_renter_review %}
+                            <p><strong>Rating:</strong> {{ existing_renter_review.rating }} / 5</p>
+                            <p><strong>Comment:</strong> {{ existing_renter_review.comment }}</p>
+                            <p class="text-muted"><i>Review left on {{ existing_renter_review.created_at }}</i></p>
                         {% elif can_renter_review %}
                             <form method="POST" action="{{ url_for('main.booking_details', booking_id=booking.booking_id) }}">
                                 <input type="hidden" name="action" value="submit_renter_review">
